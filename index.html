@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Treinamento</title>
+  <style>
+    body {
+  font-family: Arial;
+  text-align: center;
+  padding: 40px;
+  background: #fff7ed; /* fundo claro com tom de laranja */
+    }
+
+    .card {
+  background: white;
+  padding: 40px 30px;
+  border-radius: 12px;
+  max-width: 500px;
+  margin: auto;
+  box-shadow: 0 10px 25px rgba(255, 115, 0, 0.2);
+  border: 2px solid #fed7aa;
+}
+
+    button {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 14px;
+  border: none;
+  border-radius: 8px;
+  background: #f97316; /* LARANJA PRINCIPAL */
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: 0.3s;
+    }
+
+    button:hover {
+  background: #ea580c; /* laranja mais escuro */
+  transform: scale(1.03);
+    }
+
+    .home-screen {
+  background: #ed6b51; /* COR EXATA DO LOGO */
+  color: white;
+  min-height: 100vh;
+    }
+
+.home-screen .card {
+  background: transparent;
+  box-shadow: none;
+  border: none;
+}
+
+.home-screen p {
+  color: #fff;
+}
+
+.home-screen h2 {
+  color: #fff !important;
+}
+
+.home-screen button {
+  background: white;
+  color: #ff7300;
+  font-weight: bold;
+}
+
+.home-screen button:hover {
+  background: #fff7ed;
+}
+
+.app-bg {
+  background: #d67b5a; /* laranja bem leve */
+  min-height: 100vh;
+}
+    
+  </style>
+</head>
+<body>
+
+<div class="card" id="app"></div>
+
+<script>
+const steps = {
+    home: {
+  text: `
+   <img src="logo.png" style="
+  width:200px;
+  margin-bottom:30px;
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+">
+    <h2 style="color:#ea580c;">Bem-vindo ao Treinamento</h2>
+    <p style="font-size:16px; color:#444;">
+      Treinamento Telemedicina - Agendamento.
+      <br><br>
+      Siga as etapas e selecione a opção mais adequada em cada situação.
+    </p>
+  `,
+  options: [
+    { label: "Começar", next: "start" }
+  ]
+},
+  start: {
+    text: "Qual o tipo de atendimento?",
+    options: [
+      { label: "Tem saude Exemplo", next: "nao_recebeu" },
+      { label: "Pagamento", next: "pagamento" },
+      {label: "Quero altarar a data da consulta", next: "alterar_data"}
+    ]
+  },
+
+  nao_recebeu: {
+  text: "O cliente recebeu o produto?",
+  options: [
+    { label: "Sim", next: "fim" },
+    { label: "Não", next: "rastreio" }
+  ]
+},
+
+rastreio: {
+  text: "Verifique o rastreio e envie o link ao cliente.",
+  options: [
+    { label: "Finalizar", next: "fim" }
+  ]
+},
+
+  alterar_data: {
+    text:"Marque a consulte pelo site",
+    options: [
+        {label: "Finalizar", next: "fim"}
+    ]
+  },
+
+  pagamento: {
+    text: "Pagamento aprovado?",
+    options: [
+      { label: "Sim", next: "fim" },
+      { label: "Não", next: "verificar_pagamento" }
+    ]
+  },
+
+  verificar_pagamento: {
+    text: "Peça novo comprovante ao cliente.",
+    options: [
+      { label: "Finalizar", next: "fim" }
+    ]
+  },
+
+  fim: {
+    text: "Atendimento finalizado ✅",
+    options: [
+      { label: "Voltar ao início", next: "start" }
+    ]
+  }
+};
+
+function render(step) {
+  const app = document.getElementById("app");
+  const current = steps[step];
+
+  if (step === "home") {
+  document.body.classList.add("home-screen");
+  document.body.classList.remove("app-bg");
+} else {
+  document.body.classList.remove("home-screen");
+  document.body.classList.add("app-bg");
+}
+
+  app.innerHTML = `
+    <div class="card">
+
+      ${step !== "home" ? `
+  <div style="text-align:center; margin-bottom:20px;">
+    <img src="logo.png" style="width:100px;">
+  </div>
+` : ""}
+
+      <div>${current.text}</div>
+
+      ${current.options.map(opt =>
+        `<button onclick="render('${opt.next}')">${opt.label}</button>`
+      ).join("")}
+
+    </div>
+  `;
+}
+
+render("home");
+</script>
+
+</body>
+</html>
