@@ -107,22 +107,22 @@ const steps = {
   start: {
     text: "Qual o tipo de atendimento?",
     options: [
-      { label: "Tem saude Exemplo", next: "nao_recebeu" },
+      { label: "Tem saude Exemplo", next: "Quero_cancelar" },
       { label: "Pagamento", next: "pagamento" },
       {label: "Quero altarar a data da consulta", next: "alterar_data"}
     ]
   },
 
-  nao_recebeu: {
-  text: "O cliente recebeu o produto?",
+  Quero_cancelar: {
+  text: "O cliente quer cancelar?",
   options: [
-    { label: "Sim", next: "fim" },
-    { label: "Não", next: "rastreio" }
+    { label: "Sim", next: "cancelar" },
+    { label: "Não", next: "Fim" }
   ]
 },
 
-rastreio: {
-  text: "Verifique o rastreio e envie o link ao cliente.",
+cancelar: {
+  text: "Cancele no sistema.",
   options: [
     { label: "Finalizar", next: "fim" }
   ]
